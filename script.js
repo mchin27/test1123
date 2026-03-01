@@ -16,7 +16,7 @@ const GROUPS = [
       { name: 'HI88', url: 'https://m.hi183.com/Account/Login' },
       { name: 'OK8386', url: 'https://m.ok83866.com/order' },
       { name: 'QQ88', url: 'https://www.qq88444.com/m/login' },
-      { name: 'OPEN88', url: 'https://www.open88b1.vip/register' },
+      { name: 'SC88', url: 'https://m.sc881.vip/home/register?id=864521229' },
       { name: 'GK', url: 'https://gk881.sbs/' },
     ]
   },
