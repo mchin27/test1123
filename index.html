@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKVIP</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">⚡ OKVIP</div>
+    <div class="nav-tab active" onclick="showPage('home', this)">Trang Chủ</div>
+    <div class="nav-tab" onclick="showPage('info', this)">Thông Tin</div>
+  </nav>
+</header>
+
+<div class="page active" id="page-home">
+  <div class="page-title">Danh Sách Game</div>
+  <div id="game-list"></div>
+</div>
+
+<div class="page" id="page-info">
+  <div class="page-title">Thông Tin</div>
+
+  <!-- SUB TABS -->
+  <div class="sub-tabs">
+    <button class="sub-tab active" onclick="showSubTab('input', this)">📝 Nhập Thông Tin</button>
+    <button class="sub-tab" onclick="showSubTab('view', this)">📋 Xem Thông Tin</button>
+  </div>
+
+  <!-- SUB PAGE 1: NHẬP -->
+  <div class="sub-page active" id="sub-input">
+    <div class="info-card">
+      <div class="info-card-title">📝 Nhập Thông Tin</div>
+
+      <div class="form-group">
+        <label>Tài khoản <span class="hint">(6-10 ký tự)</span></label>
+        <input id="f-username" type="text" maxlength="10" placeholder="Nhập tài khoản...">
+        <div class="field-error" id="err-username"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Mật khẩu</label>
+        <div class="input-wrap">
+          <input id="f-password" type="password" placeholder="Nhập mật khẩu...">
+          <button class="eye-btn" onclick="togglePass('f-password', this)">👁</button>
+        </div>
+        <div class="field-error" id="err-password"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Mật khẩu rút tiền <span class="hint">(6 số)</span></label>
+        <div class="input-wrap">
+          <input id="f-withdraw-pass" type="password" maxlength="6" placeholder="6 chữ số..." oninput="this.value=this.value.replace(/\D/g,'')">
+          <button class="eye-btn" onclick="togglePass('f-withdraw-pass', this)">👁</button>
+        </div>
+        <div class="field-error" id="err-withdraw-pass"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Gmail</label>
+        <input id="f-email" type="email" placeholder="example@gmail.com">
+        <div class="field-error" id="err-email"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Số điện thoại</label>
+        <input id="f-phone" type="tel" maxlength="11" placeholder="0901234567" oninput="this.value=this.value.replace(/\D/g,'')">
+        <div class="field-error" id="err-phone"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Năm sinh <span class="hint">(tự động random)</span></label>
+        <div class="readonly-field" id="f-dob">
+          <span id="dob-display">—</span>
+          <button class="re-random-btn" onclick="randomDOB()">🎲 Random</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Chủ tài khoản <span class="hint">(chữ in hoa)</span></label>
+        <input id="f-fullname" type="text" placeholder="NGUYEN VAN A" oninput="this.value=this.value.toUpperCase().replace(/[^A-ZÀ-Ỹ\s]/g,'')">
+        <div class="field-error" id="err-fullname"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Số tài khoản <span class="hint">(chỉ số)</span></label>
+        <input id="f-bank-acc" type="text" placeholder="123456789" oninput="this.value=this.value.replace(/\D/g,'')">
+        <div class="field-error" id="err-bank-acc"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Ngân hàng</label>
+        <div class="cdd" id="bank-cdd">
+          <div class="cdd-trigger" onclick="toggleCDD('bank-cdd')">
+            <div class="cdd-trigger-inner">
+              <img id="bank-cdd-logo" src="" style="display:none;width:22px;height:22px;border-radius:4px;background:white;padding:2px;object-fit:contain;">
+              <span id="bank-cdd-label" class="placeholder">-- Chọn ngân hàng --</span>
+            </div>
+            <span class="cdd-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+          <div class="cdd-menu" id="bank-cdd-menu">
+            <div class="cdd-search-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input class="cdd-search" id="bank-search" placeholder="Tìm ngân hàng..." oninput="filterBanks(this.value)" onclick="event.stopPropagation()">
+            </div>
+            <div class="cdd-options" id="bank-options">
+              <div class="cdd-option" data-name="VPBANK"      onclick="selectBank('VPBANK','VPB',this)"><img class="bank-logo" src="https://api.vietqr.io/img/VPB.png" onerror="this.style.display='none'">VPBANK</div>
+              <div class="cdd-option" data-name="TPBANK"      onclick="selectBank('TPBANK','TPB',this)"><img class="bank-logo" src="https://api.vietqr.io/img/TPB.png" onerror="this.style.display='none'">TPBANK</div>
+              <div class="cdd-option" data-name="VIETCOMBANK" onclick="selectBank('VIETCOMBANK','VCB',this)"><img class="bank-logo" src="https://api.vietqr.io/img/VCB.png" onerror="this.style.display='none'">VIETCOMBANK</div>
+              <div class="cdd-option" data-name="BIDV"        onclick="selectBank('BIDV','BIDV',this)"><img class="bank-logo" src="https://api.vietqr.io/img/BIDV.png" onerror="this.style.display='none'">BIDV</div>
+              <div class="cdd-option" data-name="SACOMBANK"   onclick="selectBank('SACOMBANK','STB',this)"><img class="bank-logo" src="https://api.vietqr.io/img/STB.png" onerror="this.style.display='none'">SACOMBANK</div>
+            </div>
+            <div class="cdd-no-result" id="bank-no-result">Không tìm thấy ngân hàng</div>
+          </div>
+        </div>
+        <input type="hidden" id="f-bank" value="">
+        <div class="field-error" id="err-bank"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Chi nhánh <span class="hint">(tự động random)</span></label>
+        <div class="readonly-field" id="f-branch">
+          <span id="branch-display">—</span>
+          <button class="re-random-btn" onclick="randomBranch()">🎲 Random</button>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="save-btn" onclick="saveInfo()">💾 Lưu Thông Tin</button>
+        <button class="clear-btn" onclick="confirmClear()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Xóa
+        </button>
+      </div>
+
+      <!-- Modal xác nhận xóa -->
+      <div class="modal-overlay" id="clear-modal" onclick="if(event.target===this)closeClearModal()">
+        <div class="modal-box">
+          <div class="modal-icon">🗑️</div>
+          <div class="modal-title">Xóa toàn bộ thông tin?</div>
+          <div class="modal-desc">Tất cả dữ liệu đã nhập và lưu sẽ bị xóa vĩnh viễn. Không thể hoàn tác.</div>
+          <div class="modal-actions">
+            <button class="modal-cancel" onclick="closeClearModal()">Hủy</button>
+            <button class="modal-confirm" onclick="clearInfo()">🗑 Xóa hết</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB PAGE 2: XEM -->
+  <div class="sub-page" id="sub-view">
+    <div class="info-card">
+      <div class="info-card-title" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>📋 Thông Tin Đã Lưu</span>
+        <button class="clear-btn" style="padding:0.3rem 0.75rem;font-size:0.75rem;" onclick="confirmClear()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Xóa
+        </button>
+      </div>
+      <div id="info-display">
+        <div class="no-data">Chưa có thông tin. Hãy nhập và lưu ở tab Nhập Thông Tin.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">✓ Đã copy link!</div>
+
+<script src="script.js"></script>
+</body>
+</html>
